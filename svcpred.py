@@ -1,6 +1,5 @@
 import pandas as pd
 import numpy as np
-import subprocess
 
 class Results:
     def __init__(self, model_name: str):
@@ -179,7 +178,33 @@ generate_results(SVC_Results, pred_SVC_result, X, y, TEST_TIMES)
 SVC_averages: dict = SVC_Results.get_dictionary("mean")
 print_results(SVC_averages, "SVC Averages: ")
 
-from joblib import dump
-dump(pred_SVC_result, 'SVC_model.joblib')
+from joblib import load
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+svc_model_loaded = load('SVC_model.joblib')
+
+# Create a meshgrid for the decision boundary
+x_min, x_max = X[:, 0].min() - 1, X[:, 0].max() + 1
+y_min, y_max = X[:, 1].min() - 1, X[:, 1].max() + 1
+xx, yy = np.meshgrid(np.arange(x_min, x_max, 0.1), np.arange(y_min, y_max, 0.1))
+
+# Predict the class probabilities for the meshgrid
+Z = svc_model_loaded.predict_proba(np.c_[xx.ravel(), yy.ravel()])[:, 1]
+Z = Z.reshape(xx.shape)
+
+# Create the scatter plot with colored points
+plt.figure(figsize=(8, 6))
+sns.scatterplot(x=X[:, 0], y=X[:, 1], hue=y, palette=["blue", "red"], edgecolor="black")
+
+# Add the decision boundary as a contour plot
+plt.contour(xx, yy, Z, alpha=0.5)
+
+# Add a legend and labels
+plt.legend(title="Attrition", loc="upper right")
+plt.xlabel("Feature 1")
+plt.ylabel("Feature 2")
+plt.title("Classification Plot")
+plt.show()
 
 
