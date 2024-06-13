@@ -1,6 +1,6 @@
 import pandas as pd
 import numpy as np
-import matplotlib.pyplot as plt
+import subprocess
 
 class Results:
     def __init__(self, model_name: str):

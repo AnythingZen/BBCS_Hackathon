@@ -1,8 +1,15 @@
 import streamlit as st
 import numpy as np
-from joblib import dump, load
+from joblib import load
 from sklearn.preprocessing import StandardScaler
 import pandas as pd
+import subprocess
+
+try:
+    subprocess.call(['pip', 'install', '-r', 'requirements.txt'])
+except Exception as e:
+    st.error(f"Error installing dependencies: {e}")
+
 
 # Load the saved model
 svc_model_loaded = load('SVC_model.joblib')
