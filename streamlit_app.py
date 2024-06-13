@@ -10,7 +10,6 @@ try:
 except Exception as e:
     st.error(f"Error installing dependencies: {e}")
 
-
 # Load the saved model
 svc_model_loaded = load('SVC_model.joblib')
 
